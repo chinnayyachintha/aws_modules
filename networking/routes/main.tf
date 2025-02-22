@@ -1,26 +1,29 @@
-resource "aws_route_table" "public" {
-  vpc_id = var.vpc_id
-
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = var.internet_gateway_id
-  }
-
-  tags = merge(var.tags, { Name = "${var.vpc_name}-public-route-table" })
+variable "vpc_id" {
+  description = "VPC ID where the route tables will be created"
+  type        = string
 }
 
-resource "aws_route_table_association" "public" {
-  subnet_id      = var.public_subnet_id
-  route_table_id = aws_route_table.public.id
+variable "internet_gateway_id" {
+  description = "Internet Gateway ID for associating with the public route table"
+  type        = string
 }
 
-resource "aws_route_table" "private" {
-  vpc_id = var.vpc_id
-
-  tags = merge(var.tags, { Name = "${var.vpc_name}-private-route-table" })
+variable "public_subnet_id" {
+  description = "Public subnet ID to associate with the public route table"
+  type        = string
 }
 
-resource "aws_route_table_association" "private" {
-  subnet_id      = var.private_subnet_id
-  route_table_id = aws_route_table.private.id
+variable "private_subnet_id" {
+  description = "Private subnet ID to associate with the private route table"
+  type        = string
+}
+
+variable "vpc_name" {
+  description = "Name of the VPC for tagging resources"
+  type        = string
+}
+
+variable "tags" {
+  description = "A map of tags to assign to resources"
+  type        = map(string)
 }
