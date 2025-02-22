@@ -5,6 +5,8 @@ resource "aws_route_table" "public" {
     cidr_block = "0.0.0.0/0"
     gateway_id = var.internet_gateway_id
   }
+
+  tags = merge(var.tags, { Name = "${var.vpc_name}-public-route-table" })
 }
 
 resource "aws_route_table_association" "public" {
@@ -14,6 +16,8 @@ resource "aws_route_table_association" "public" {
 
 resource "aws_route_table" "private" {
   vpc_id = var.vpc_id
+
+  tags = merge(var.tags, { Name = "${var.vpc_name}-private-route-table" })
 }
 
 resource "aws_route_table_association" "private" {
